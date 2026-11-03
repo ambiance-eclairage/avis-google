@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votre Avis - Ambiance Éclairage</title>
+    <!-- Styles & Polices -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #265187;
+            --dark-gray: #221F1F;
+            --medium-gray: #686868;
+            --light-gray: #F4F6F9;
+            --border-gray: #C1C1C1;
+            --accent-red: #FF0000;
+            --star-gold: #FFC107;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .card {
+            background: #FFFFFF;
+            width: 100%;
+            max-width: 580px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border-top: 6px solid var(--primary-blue);
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px 20px 20px;
+            border-bottom: 1px solid #EEEEEE;
+        }
+
+        .logo-symbol {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .slogan {
+            font-weight: 100;
+            font-size: 13px;
+            color: var(--medium-gray);
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .form-body {
+            padding: 30px;
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 8px;
+        }
+
+        .question-subtitle {
+            font-size: 14px;
+            color: var(--medium-gray);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--border-gray);
+            border-radius: 6px;
+            font-size: 15px;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(38, 81, 135, 0.15);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .option-card {
+            border: 2px solid #EFEFEF;
+            border-radius: 8px;
+            padding: 16px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #FAFAFA;
+        }
+
+        .option-card:hover {
+            border-color: var(--primary-blue);
+            background: #F0F4F9;
+        }
+
+        .option-card.selected {
+            border-color: var(--primary-blue);
+            background: var(--primary-blue);
+            color: #FFFFFF;
+        }
+
+        .option-card .icon {
+            font-size: 24px;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .option-card .label {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .stars-container {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 20px 0 30px;
+        }
+
+        .star {
+            font-size: 38px;
+            color: #DDD;
+            cursor: pointer;
+            transition: color 0.2s, transform 0.1s;
+        }
+
+        .star:hover, .star.active {
+            color: var(--star-gold);
+        }
+
+        .star:active {
+            transform: scale(1.2);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary-blue);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #1c3d67;
+        }
+
+        .btn-google {
+            background-color: #4285F4;
+            margin-top: 15px;
+        }
+
+        .btn-google:hover {
+            background-color: #3367D6;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-gray);
+            border-radius: 6px;
+            min-height: 100px;
+            margin-bottom: 15px;
+            font-family: inherit;
+        }
+
+        .feedback-success {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .feedback-success h3 {
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+        }
+
+        .feedback-success p {
+            font-size: 14px;
+            color: var(--medium-gray);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <!-- En-tête officiel Ambiance Éclairage -->
+    <div class="header">
+        <div class="logo-symbol">Æ</div>
+        <div class="logo-text">Ambiance Éclairage</div>
+        <div class="slogan">Tout sur la communication visuelle</div>
+    </div>
+
+    <div class="form-body">
+        <!-- ÉTAPE 1 : Identité & Origine -->
+        <div class="step active" id="step-1">
+            <div class="question-title">Bienvenue !</div>
+            <div class="question-subtitle">Aidez-nous à mieux vous connaître en quelques secondes.</div>
+            
+            <div class="form-group">
+                <label for="client-name">Votre Nom ou le Nom de votre Entreprise *</label>
+                <input type="text" id="client-name" placeholder="ex: Jean Dupont / Société XYZ" required>
+            </div>
+
+            <div class="form-group">
+                <label>Comment nous avez-vous connu ? *</label>
+                <div class="options-grid">
+                    <div class="option-card" onclick="selectSource(this, 'Google')">
+                        <span class="icon">🔍</span>
+                        <span class="label">Recherche Google</span>
+                    </div>
+                    <div class="option-card" onclick="selectSource(this, 'Réseaux Sociaux')">
+                        <span class="icon">📲</span>
+                        <span class="label">Facebook / LinkedIn</span>
+                    </div>
+                    <div class="option-card" onclick="selectSource(this, 'Recommandation')">
+                        <span class="icon">🤝</span>
+                        <span class="label">Recommandation</span>
+                    </div>
+                    <div class="option-card" onclick="selectSource(this, 'Enseigne / Rue')">
+                        <span class="icon">🏢</span>
+                        <span class="label">Enseigne / Passant</span>
+                    </div>
+                    <div class="option-card" onclick="selectSource(this, 'Foire / Salon')">
+                        <span class="icon">🎪</span>
+                        <span class="label">Foire / Salon</span>
+                    </div>
+                    <div class="option-card" onclick="selectSource(this, 'Autre')">
+                        <span class="icon">❓</span>
+                        <span class="label">Autre</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn" onclick="goToStep(2)">Continuer ➔</button>
+        </div>
+
+        <!-- ÉTAPE 2 : Évaluation & Redirection Google -->
+        <div class="step" id="step-2">
+            <div class="question-title">Votre Avis</div>
+            <div class="question-subtitle">Quelle a été votre expérience avec nos équipes ?</div>
+
+            <div class="stars-container">
+                <span class="star" onclick="setRating(1)">★</span>
+                <span class="star" onclick="setRating(2)">★</span>
+                <span class="star" onclick="setRating(3)">★</span>
+                <span class="star" onclick="setRating(4)">★</span>
+                <span class="star" onclick="setRating(5)">★</span>
+            </div>
+
+            <!-- Résultat pour 4 ou 5 étoiles -->
+            <div id="google-redirect" style="display: none;" class="feedback-success">
+                <h3>Merci pour votre confiance ! 🌟</h3>
+                <p>Votre satisfaction nous fait très plaisir. Pourriez-vous partager votre expérience sur notre fiche Google ? Cela aide énormément notre entreprise à se faire connaître.</p>
+                
+                <a href="https://g.page/r/CZlVXyPCN6pBEAI/review" target="_blank" class="btn btn-google">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="#FFF"><path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.761H12.545z"/></svg>
+                    Laisser un avis sur Google
+                </a>
+            </div>
+
+            <!-- Résultat pour 1 à 3 étoiles -->
+            <div id="private-feedback" style="display: none;">
+                <label for="feedback-text">Comment pouvons-nous nous améliorer ?</label>
+                <textarea id="feedback-text" placeholder="Dites-nous ce qui n'a pas répondu à vos attentes..."></textarea>
+                <button class="btn" onclick="submitPrivateFeedback()">Envoyer mon retour</button>
+            </div>
+        </div>
+
+        <!-- ÉTAPE 3 : Merci final (pour retour privé) -->
+        <div class="step" id="step-3">
+            <div class="feedback-success">
+                <h3>Message bien reçu ! 👍</h3>
+                <p>Merci pour votre franchise. Vos remarques ont été transmises directement à la direction d'Ambiance Éclairage afin d'améliorer nos prestations.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let formData = {
+        name: '',
+        source: '',
+        rating: 0,
+        feedback: ''
+    };
+
+    function selectSource(element, sourceValue) {
+        document.querySelectorAll('.option-card').forEach(el => el.classList.remove('selected'));
+        element.classList.add('selected');
+        formData.source = sourceValue;
+    }
+
+    function goToStep(stepNumber) {
+        const nameInput = document.getElementById('client-name').value;
+        if (!nameInput && stepNumber === 2) {
+            alert('Veuillez renseigner votre nom ou le nom de votre entreprise.');
+            return;
+        }
+        if (!formData.source && stepNumber === 2) {
+            alert('Veuillez sélectionner comment vous nous avez découvert.');
+            return;
+        }
+        formData.name = nameInput;
+
+        document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+        document.getElementById(`step-${stepNumber}`).classList.add('active');
+    }
+
+    function setRating(ratingValue) {
+        formData.rating = ratingValue;
+        const stars = document.querySelectorAll('.star');
+        
+        stars.forEach((star, index) => {
+            if (index < ratingValue) {
+                star.classList.add('active');
+            } else {
+                star.classList.remove('active');
+            }
+        });
+
+        const googleBox = document.getElementById('google-redirect');
+        const privateBox = document.getElementById('private-feedback');
+
+        if (ratingValue >= 4) {
+            googleBox.style.display = 'block';
+            privateBox.style.display = 'none';
+        } else {
+            googleBox.style.display = 'none';
+            privateBox.style.display = 'block';
+        }
+    }
+
+    function submitPrivateFeedback() {
+        formData.feedback = document.getElementById('feedback-text').value;
+        document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+        document.getElementById('step-3').classList.add('active');
+    }
+</script>
+
+</body>
+</html>

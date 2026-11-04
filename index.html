@@ -1,739 +1,413 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Votre avis compte | Ambiance Éclairage</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votre Avis - Ambiance Éclairage</title>
+    <!-- Styles & Polices -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #265187;
+            --dark-gray: #221F1F;
+            --medium-gray: #686868;
+            --light-gray: #F4F6F9;
+            --border-gray: #C1C1C1;
+            --accent-red: #FF0000;
+            --star-gold: #FFC107;
+        }
 
-  <style>
-    :root {
-      --primary: #f5a623;
-      --primary-dark: #d98b0b;
-      --dark: #202020;
-      --text: #333333;
-      --muted: #777777;
-      --light: #f7f7f7;
-      --border: #dddddd;
-      --success: #218838;
-      --danger: #c62828;
-    }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', 'Arial', sans-serif;
+        }
 
-    * {
-      box-sizing: border-box;
-    }
+        body {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-    body {
-      margin: 0;
-      padding: 24px 16px;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f3f3f3;
-      color: var(--text);
-      font-family: Arial, Helvetica, sans-serif;
-    }
+        .card {
+            background: #FFFFFF;
+            width: 100%;
+            max-width: 580px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border-top: 6px solid var(--primary-blue);
+        }
 
-    .container {
-      width: 100%;
-      max-width: 560px;
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 36px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-    }
+        .header {
+            text-align: center;
+            padding: 30px 20px 20px;
+            border-bottom: 1px solid #EEEEEE;
+        }
 
-    .brand {
-      text-align: center;
-      margin-bottom: 28px;
-    }
+        .logo-symbol {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            letter-spacing: -1px;
+            line-height: 1;
+        }
 
-    .brand h1 {
-      margin: 0;
-      color: var(--dark);
-      font-size: 25px;
-      letter-spacing: 1px;
-    }
+        .logo-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
 
-    .brand p {
-      margin: 8px 0 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
+        .slogan {
+            font-weight: 100;
+            font-size: 13px;
+            color: var(--medium-gray);
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+        }
 
-    .progress {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 30px;
-    }
+        .form-body {
+            padding: 30px;
+        }
 
-    .progress span {
-      height: 5px;
-      flex: 1;
-      background: #e8e8e8;
-      border-radius: 10px;
-    }
+        .step {
+            display: none;
+        }
 
-    .progress span.active {
-      background: var(--primary);
-    }
+        .step.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out;
+        }
 
-    .step {
-      display: none;
-    }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    .step.active {
-      display: block;
-      animation: fadeIn 0.25s ease;
-    }
+        .question-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 8px;
+        }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(5px);
-      }
+        .question-subtitle {
+            font-size: 14px;
+            color: var(--medium-gray);
+            margin-bottom: 20px;
+        }
 
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+        .form-group {
+            margin-bottom: 24px;
+        }
 
-    h2 {
-      margin: 0 0 12px;
-      color: var(--dark);
-      font-size: 22px;
-      line-height: 1.35;
-    }
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
 
-    .description {
-      margin: 0 0 24px;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.6;
-    }
+        input[type="text"] {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--border-gray);
+            border-radius: 6px;
+            font-size: 15px;
+            outline: none;
+            transition: border 0.2s;
+        }
 
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 14px;
-      font-weight: bold;
-    }
+        input[type="text"]:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(38, 81, 135, 0.15);
+        }
 
-    input[type="text"],
-    select,
-    textarea {
-      width: 100%;
-      padding: 13px 14px;
-      margin-bottom: 20px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 15px;
-      background: #ffffff;
-      color: var(--text);
-    }
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
 
-    input[type="text"]:focus,
-    select:focus,
-    textarea:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.15);
-    }
+        .option-card {
+            border: 2px solid #EFEFEF;
+            border-radius: 8px;
+            padding: 16px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #FAFAFA;
+        }
 
-    textarea {
-      min-height: 130px;
-      resize: vertical;
-      line-height: 1.5;
-    }
+        .option-card:hover {
+            border-color: var(--primary-blue);
+            background: #F0F4F9;
+        }
 
-    .stars {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin: 24px 0 12px;
-    }
+        .option-card.selected {
+            border-color: var(--primary-blue);
+            background: var(--primary-blue);
+            color: #FFFFFF;
+        }
 
-    .star {
-      border: none;
-      background: transparent;
-      padding: 0;
-      font-size: 43px;
-      line-height: 1;
-      color: #d8d8d8;
-      cursor: pointer;
-      transition: transform 0.15s ease, color 0.15s ease;
-    }
+        .option-card .icon {
+            font-size: 24px;
+            margin-bottom: 6px;
+            display: block;
+        }
 
-    .star:hover {
-      transform: scale(1.12);
-    }
+        .option-card .label {
+            font-size: 13px;
+            font-weight: 700;
+        }
 
-    .star.selected {
-      color: var(--primary);
-    }
+        .stars-container {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 20px 0 30px;
+        }
 
-    .rating-label {
-      text-align: center;
-      min-height: 24px;
-      margin-bottom: 24px;
-      color: var(--muted);
-      font-size: 14px;
-    }
+        .star {
+            font-size: 38px;
+            color: #DDD;
+            cursor: pointer;
+            transition: color 0.2s, transform 0.1s;
+        }
 
-    .btn {
-      width: 100%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 14px 18px;
-      border: none;
-      border-radius: 8px;
-      background: var(--primary);
-      color: #202020;
-      font-size: 15px;
-      font-weight: bold;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.2s ease, transform 0.15s ease;
-    }
+        .star:hover, .star.active {
+            color: var(--star-gold);
+        }
 
-    .btn:hover {
-      background: var(--primary-dark);
-      transform: translateY(-1px);
-    }
+        .star:active {
+            transform: scale(1.2);
+        }
 
-    .btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary-blue);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
 
-    .btn-secondary {
-      margin-top: 10px;
-      background: #eeeeee;
-      color: #333333;
-    }
+        .btn:hover {
+            background-color: #1c3d67;
+        }
 
-    .btn-secondary:hover {
-      background: #dddddd;
-    }
+        .btn-google {
+            background-color: #4285F4;
+            margin-top: 15px;
+        }
 
-    .google-link {
-      display: block;
-      margin-top: 14px;
-      text-align: center;
-      color: #1769aa;
-      font-size: 14px;
-      font-weight: bold;
-      text-decoration: none;
-    }
+        .btn-google:hover {
+            background-color: #3367D6;
+        }
 
-    .google-link:hover {
-      text-decoration: underline;
-    }
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-gray);
+            border-radius: 6px;
+            min-height: 100px;
+            margin-bottom: 15px;
+            font-family: inherit;
+        }
 
-    .message {
-      display: none;
-      padding: 12px 14px;
-      margin-bottom: 18px;
-      border-radius: 8px;
-      font-size: 14px;
-      line-height: 1.5;
-    }
+        .feedback-success {
+            text-align: center;
+            padding: 20px 0;
+        }
 
-    .message.error {
-      display: block;
-      color: var(--danger);
-      background: #fff0f0;
-      border: 1px solid #ffd0d0;
-    }
+        .feedback-success h3 {
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+        }
 
-    .message.success {
-      display: block;
-      color: var(--success);
-      background: #effaf1;
-      border: 1px solid #c9ebce;
-    }
-
-    .thank-you {
-      text-align: center;
-      padding: 15px 0;
-    }
-
-    .thank-you-icon {
-      font-size: 48px;
-      margin-bottom: 15px;
-    }
-
-    .footer {
-      margin-top: 28px;
-      text-align: center;
-      color: #999999;
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    /* Champ anti-spam invisible */
-    .honeypot {
-      position: absolute;
-      left: -9999px;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-    }
-
-    @media (max-width: 480px) {
-      body {
-        padding: 12px;
-        align-items: flex-start;
-      }
-
-      .container {
-        padding: 25px 20px;
-        margin-top: 10px;
-      }
-
-      .brand h1 {
-        font-size: 22px;
-      }
-
-      h2 {
-        font-size: 20px;
-      }
-
-      .star {
-        font-size: 38px;
-      }
-    }
-  </style>
+        .feedback-success p {
+            font-size: 14px;
+            color: var(--medium-gray);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
-
 <body>
 
-  <main class="container">
-
-    <div class="brand">
-      <h1>AMBIANCE ÉCLAIRAGE</h1>
-      <p>Votre satisfaction, notre priorité</p>
+<div class="card">
+    <!-- En-tête officiel Ambiance Éclairage -->
+    <div class="header">
+        <div class="logo-symbol">Æ</div>
+        <div class="logo-text">Ambiance Éclairage</div>
+        <div class="slogan">Tout sur la communication visuelle</div>
     </div>
 
-    <div class="progress" aria-label="Progression du formulaire">
-      <span id="progress1" class="active"></span>
-      <span id="progress2"></span>
-      <span id="progress3"></span>
-    </div>
+    <div class="form-body">
+        <!-- ÉTAPE 1 : Identité & Origine -->
+        <div class="step active" id="step-1">
+            <div class="question-title">Bienvenue !</div>
+            <div class="question-subtitle">Aidez-nous à mieux vous connaître en quelques secondes.</div>
+            
+            <div class="form-group">
+                <label for="client-name">Votre Nom ou le Nom de votre Entreprise *</label>
+                <input type="text" id="client-name" placeholder="ex: Jean Dupont / Société XYZ" required>
+            </div>
 
-    <!-- ÉTAPE 1 -->
-    <section id="step1" class="step active">
+            <div class="form-group">
+                <label>Comment nous avez-vous connu ? *</label>
+                <div class="options-grid">
+                    <div class="option-card" onclick="selectSource(this, 'Google')">
+                        <span class="icon">🔍</span>
+                        <span class="label">Recherche Google</span>
+                    </div>
+                    <div class="option-card" onclick="selectSource(this, 'Réseaux Sociaux')">
+                        <span class="icon">📲</span>
+                        <span class="label">Facebook / LinkedIn</span>
+                    </div>
+                    <div class="option-card" onclick="selectSource(this, 'Recommandation')">
+                        <span class="icon">🤝</span>
+                        <span class="label">Recommandation</span>
+                    </div>
+                    <div class="option-card" onclick="selectSource(this, 'Enseigne / Rue')">
+                        <span class="icon">🏢</span>
+                        <span class="label">Enseigne / Passant</span>
+                    </div>
+                    <div class="option-card" onclick="selectSource(this, 'Foire / Salon')">
+                        <span class="icon">🎪</span>
+                        <span class="label">Foire / Salon</span>
+                    </div>
+                    <div class="option-card" onclick="selectSource(this, 'Autre')">
+                        <span class="icon">❓</span>
+                        <span class="label">Autre</span>
+                    </div>
+                </div>
+            </div>
 
-      <h2>Votre avis nous intéresse !</h2>
-
-      <p class="description">
-        Merci de nous accorder quelques instants pour partager votre expérience
-        avec Ambiance Éclairage.
-      </p>
-
-      <form id="clientForm">
-
-        <label for="clientName">Votre nom ou celui de votre entreprise</label>
-        <input
-          type="text"
-          id="clientName"
-          name="clientName"
-          placeholder="Ex. : Jean Rakoto / Entreprise ABC"
-          required
-        >
-
-        <label for="discoverySource">Comment avez-vous connu Ambiance Éclairage ?</label>
-        <select id="discoverySource" name="discoverySource" required>
-          <option value="">Sélectionnez une réponse</option>
-          <option value="Google">Recherche Google</option>
-          <option value="Réseaux sociaux">Réseaux sociaux</option>
-          <option value="Recommandation">Recommandation</option>
-          <option value="Enseigne ou passage dans la rue">Enseigne / passage dans la rue</option>
-          <option value="Salon ou événement">Salon ou événement</option>
-          <option value="Autre">Autre</option>
-        </select>
-
-        <button type="submit" class="btn">
-          Continuer
-        </button>
-
-      </form>
-    </section>
-
-    <!-- ÉTAPE 2 -->
-    <section id="step2" class="step">
-
-      <h2>Comment évaluez-vous notre service ?</h2>
-
-      <p class="description">
-        Votre retour nous aide à améliorer nos produits et services.
-      </p>
-
-      <div class="stars" role="group" aria-label="Votre note">
-        <button type="button" class="star" data-rating="1" aria-label="1 étoile">★</button>
-        <button type="button" class="star" data-rating="2" aria-label="2 étoiles">★</button>
-        <button type="button" class="star" data-rating="3" aria-label="3 étoiles">★</button>
-        <button type="button" class="star" data-rating="4" aria-label="4 étoiles">★</button>
-        <button type="button" class="star" data-rating="5" aria-label="5 étoiles">★</button>
-      </div>
-
-      <div id="ratingLabel" class="rating-label">
-        Sélectionnez une note
-      </div>
-
-      <!-- Note de 1 à 3 -->
-      <div id="privateFeedback" style="display:none;">
-
-        <label for="feedback">
-          Que pouvons-nous améliorer ?
-        </label>
-
-        <textarea
-          id="feedback"
-          placeholder="Votre commentaire nous aidera à nous améliorer..."
-        ></textarea>
-
-        <button
-          type="button"
-          id="sendPrivateButton"
-          class="btn"
-          onclick="sendFeedback()"
-        >
-          Envoyer mon avis
-        </button>
-
-      </div>
-
-      <!-- Note de 4 à 5 -->
-      <div id="positiveFeedback" style="display:none;">
-
-        <p class="description">
-          Merci pour votre excellente note ! Vous pouvez envoyer votre évaluation
-          puis, si vous le souhaitez, partager également votre avis sur Google.
-        </p>
-
-        <button
-          type="button"
-          id="sendPositiveButton"
-          class="btn"
-          onclick="sendFeedback()"
-        >
-          Envoyer mon évaluation
-        </button>
-
-      </div>
-
-      <button
-        type="button"
-        class="btn btn-secondary"
-        onclick="goToStep(1)"
-      >
-        Retour
-      </button>
-
-    </section>
-
-    <!-- ÉTAPE 3 -->
-    <section id="step3" class="step">
-
-      <div class="thank-you">
-
-        <div class="thank-you-icon">✓</div>
-
-        <h2>Merci pour votre retour !</h2>
-
-        <p class="description">
-          Votre évaluation a bien été envoyée à notre équipe.
-          Votre avis contribue à améliorer l’expérience de nos clients.
-        </p>
-
-        <div id="googleReviewContainer" style="display:none;">
-
-          <p class="description">
-            Vous avez apprécié notre service ? Vous pouvez également partager
-            votre expérience sur Google.
-          </p>
-
-          <a
-            class="btn"
-            href="https://g.page/r/CZlVXyPCN6pBEAI/review"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Laisser un avis sur Google
-          </a>
-
+            <button class="btn" onclick="goToStep(2)">Continuer ➔</button>
         </div>
 
-      </div>
+        <!-- ÉTAPE 2 : Évaluation & Redirection Google -->
+        <div class="step" id="step-2">
+            <div class="question-title">Votre Avis</div>
+            <div class="question-subtitle">Quelle a été votre expérience avec nos équipes ?</div>
 
-    </section>
+            <div class="stars-container">
+                <span class="star" onclick="setRating(1)">★</span>
+                <span class="star" onclick="setRating(2)">★</span>
+                <span class="star" onclick="setRating(3)">★</span>
+                <span class="star" onclick="setRating(4)">★</span>
+                <span class="star" onclick="setRating(5)">★</span>
+            </div>
 
-    <div id="statusMessage" class="message" role="status"></div>
+            <!-- Résultat pour 4 ou 5 étoiles -->
+            <div id="google-redirect" style="display: none;" class="feedback-success">
+                <h3>Merci pour votre confiance ! 🌟</h3>
+                <p>Votre satisfaction nous fait très plaisir. Pourriez-vous partager votre expérience sur notre fiche Google ? Cela aide énormément notre entreprise à se faire connaître.</p>
+                
+                <a href="https://g.page/r/CZlVXyPCN6pBEAI/review" target="_blank" class="btn btn-google">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="#FFF"><path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.761H12.545z"/></svg>
+                    Laisser un avis sur Google
+                </a>
+            </div>
 
-    <div class="footer">
-      © Ambiance Éclairage Madagascar<br>
-      Merci de votre confiance.
+            <!-- Résultat pour 1 à 3 étoiles -->
+            <div id="private-feedback" style="display: none;">
+                <label for="feedback-text">Comment pouvons-nous nous améliorer ?</label>
+                <textarea id="feedback-text" placeholder="Dites-nous ce qui n'a pas répondu à vos attentes..."></textarea>
+                <button class="btn" onclick="submitPrivateFeedback()">Envoyer mon retour</button>
+            </div>
+        </div>
+
+        <!-- ÉTAPE 3 : Merci final (pour retour privé) -->
+        <div class="step" id="step-3">
+            <div class="feedback-success">
+                <h3>Message bien reçu ! 👍</h3>
+                <p>Merci pour votre franchise. Vos remarques ont été transmises directement à la direction d'Ambiance Éclairage afin d'améliorer nos prestations.</p>
+            </div>
+        </div>
     </div>
+</div>
 
-  </main>
-
-  <script>
-    /*
-      CONFIGURATION EMAIL
-      Les évaluations seront envoyées à cette adresse via FormSubmit.
-    */
-    const FORM_ENDPOINT = "https://formsubmit.co/ajax/rmd.ambiance@gmail.com";
-
-    /*
-      Lien Google Reviews d'Ambiance Éclairage
-    */
-    const GOOGLE_REVIEW_URL =
-      "https://g.page/r/CZlVXyPCN6pBEAI/review";
-
-    /*
-      Données du formulaire
-    */
-    const formData = {
-      name: "",
-      source: "",
-      rating: 0,
-      feedback: ""
+<script>
+    let formData = {
+        name: '',
+        source: '',
+        rating: 0,
+        feedback: ''
     };
 
-    const ratingMessages = {
-      1: "Nous sommes désolés que votre expérience n'ait pas été satisfaisante.",
-      2: "Merci pour votre retour. Nous pouvons encore nous améliorer.",
-      3: "Merci ! Nous allons prendre votre retour en compte.",
-      4: "Merci pour votre belle note !",
-      5: "Merci pour votre excellente note !"
-    };
-
-    /*
-      ÉTAPE 1 : validation des informations client
-    */
-    document
-      .getElementById("clientForm")
-      .addEventListener("submit", function(event) {
-        event.preventDefault();
-
-        const name = document.getElementById("clientName").value.trim();
-        const source = document.getElementById("discoverySource").value;
-
-        if (!name || !source) {
-          showMessage("Veuillez compléter les champs obligatoires.", "error");
-          return;
-        }
-
-        formData.name = name;
-        formData.source = source;
-
-        hideMessage();
-        goToStep(2);
-      });
-
-    /*
-      ÉTAPE 2 : sélection de la note
-    */
-    const starButtons = document.querySelectorAll(".star");
-
-    starButtons.forEach(function(button) {
-      button.addEventListener("click", function() {
-        const rating = Number(button.dataset.rating);
-        setRating(rating);
-      });
-    });
-
-    function setRating(rating) {
-      formData.rating = rating;
-
-      starButtons.forEach(function(button) {
-        const buttonRating = Number(button.dataset.rating);
-
-        if (buttonRating <= rating) {
-          button.classList.add("selected");
-        } else {
-          button.classList.remove("selected");
-        }
-      });
-
-      document.getElementById("ratingLabel").textContent =
-        ratingMessages[rating];
-
-      document.getElementById("privateFeedback").style.display =
-        rating <= 3 ? "block" : "none";
-
-      document.getElementById("positiveFeedback").style.display =
-        rating >= 4 ? "block" : "none";
-
-      hideMessage();
+    function selectSource(element, sourceValue) {
+        document.querySelectorAll('.option-card').forEach(el => el.classList.remove('selected'));
+        element.classList.add('selected');
+        formData.source = sourceValue;
     }
 
-    /*
-      Navigation entre les étapes
-    */
     function goToStep(stepNumber) {
-      document.querySelectorAll(".step").forEach(function(step) {
-        step.classList.remove("active");
-      });
+        const nameInput = document.getElementById('client-name').value;
+        if (!nameInput && stepNumber === 2) {
+            alert('Veuillez renseigner votre nom ou le nom de votre entreprise.');
+            return;
+        }
+        if (!formData.source && stepNumber === 2) {
+            alert('Veuillez sélectionner comment vous nous avez découvert.');
+            return;
+        }
+        formData.name = nameInput;
 
-      document.getElementById("step" + stepNumber).classList.add("active");
-
-      document.querySelectorAll(".progress span").forEach(function(bar, index) {
-        bar.classList.toggle("active", index < stepNumber);
-      });
-
-      hideMessage();
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
+        document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+        document.getElementById(`step-${stepNumber}`).classList.add('active');
     }
 
-    /*
-      Affichage des messages d'erreur ou de succès
-    */
-    function showMessage(message, type) {
-      const statusMessage = document.getElementById("statusMessage");
-
-      statusMessage.textContent = message;
-      statusMessage.className = "message " + type;
-      statusMessage.style.display = "block";
-    }
-
-    function hideMessage() {
-      const statusMessage = document.getElementById("statusMessage");
-
-      statusMessage.textContent = "";
-      statusMessage.className = "message";
-      statusMessage.style.display = "none";
-    }
-
-    /*
-      ENVOI DE L'ÉVALUATION PAR EMAIL
-    */
-    async function sendFeedback() {
-      hideMessage();
-
-      if (!formData.name || !formData.source) {
-        showMessage(
-          "Les informations du client sont manquantes. Veuillez recommencer.",
-          "error"
-        );
-        goToStep(1);
-        return;
-      }
-
-      if (!formData.rating) {
-        showMessage("Veuillez sélectionner une note.", "error");
-        return;
-      }
-
-      const feedback = document.getElementById("feedback").value.trim();
-
-      if (formData.rating <= 3 && !feedback) {
-        showMessage(
-          "Merci de préciser ce que nous pouvons améliorer.",
-          "error"
-        );
-        document.getElementById("feedback").focus();
-        return;
-      }
-
-      formData.feedback = feedback;
-
-      const privateButton = document.getElementById("sendPrivateButton");
-      const positiveButton = document.getElementById("sendPositiveButton");
-
-      const activeButton =
-        formData.rating <= 3 ? privateButton : positiveButton;
-
-      const originalButtonText = activeButton.textContent;
-
-      activeButton.disabled = true;
-      activeButton.textContent = "Envoi en cours...";
-
-      /*
-        Préparation des données envoyées à FormSubmit
-      */
-      const data = new FormData();
-
-      data.append("_subject", "Nouvelle évaluation client - Ambiance Éclairage");
-      data.append("_captcha", "false");
-      data.append("_template", "table");
-
-      /*
-        Champ anti-spam invisible
-      */
-      data.append("_honey", "");
-
-      data.append("Nom du client", formData.name);
-      data.append("Source de découverte", formData.source);
-      data.append("Note attribuée", formData.rating + " / 5");
-      data.append(
-        "Commentaire",
-        formData.rating <= 3
-          ? formData.feedback
-          : "Le client a attribué une note de " + formData.rating + " / 5."
-      );
-
-      try {
-        const response = await fetch(FORM_ENDPOINT, {
-          method: "POST",
-          body: data,
-          headers: {
-            "Accept": "application/json"
-          }
+    function setRating(ratingValue) {
+        formData.rating = ratingValue;
+        const stars = document.querySelectorAll('.star');
+        
+        stars.forEach((star, index) => {
+            if (index < ratingValue) {
+                star.classList.add('active');
+            } else {
+                star.classList.remove('active');
+            }
         });
 
-        const result = await response.json();
+        const googleBox = document.getElementById('google-redirect');
+        const privateBox = document.getElementById('private-feedback');
 
-        /*
-          FormSubmit peut renvoyer success sous forme de texte ou de booléen.
-        */
-        const success =
-          response.ok &&
-          (
-            result.success === true ||
-            result.success === "true"
-          );
-
-        if (!success) {
-          throw new Error(
-            result.message || "L'envoi du formulaire a échoué."
-          );
+        if (ratingValue >= 4) {
+            googleBox.style.display = 'block';
+            privateBox.style.display = 'none';
+        } else {
+            googleBox.style.display = 'none';
+            privateBox.style.display = 'block';
         }
-
-        /*
-          Envoi réussi : afficher la page de remerciement
-        */
-        goToStep(3);
-
-        /*
-          Afficher le lien Google uniquement pour les notes de 4 ou 5.
-        */
-        document.getElementById("googleReviewContainer").style.display =
-          formData.rating >= 4 ? "block" : "none";
-
-      } catch (error) {
-        console.error("Erreur lors de l'envoi :", error);
-
-        showMessage(
-          "Une erreur est survenue lors de l'envoi. Vérifiez votre connexion et réessayez.",
-          "error"
-        );
-
-      } finally {
-        activeButton.disabled = false;
-        activeButton.textContent = originalButtonText;
-      }
     }
-  </script>
+
+    function submitPrivateFeedback() {
+        formData.feedback = document.getElementById('feedback-text').value;
+        document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+        document.getElementById('step-3').classList.add('active');
+    }
+</script>
 
 </body>
 </html>

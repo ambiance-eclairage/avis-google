@@ -360,6 +360,9 @@
 </div>
 
 <script>
+    // URL de votre application Web Google Apps Script
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx65krYOvAFQRYBnlok4Fs5_cxfvTZu_lu9pbKF3cquDXHF9shPQghcZRnW3L81gP3k/exec";
+
     let formData = {
         name: '',
         source: '',
@@ -413,45 +416,72 @@
         }
     }
 
-    // Envoi de l'e-mail pour un avis positif (4 ou 5 étoiles)
+    // Fonction utilitaire pour enregistrer les données dans Google Sheets
+    function saveToGoogleSheets(data) {
+        fetch(GOOGLE_SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        }).catch(err => console.error("Erreur enregistrement Google Sheets:", err));
+    }
+
+    // Envoi pour un avis positif (4 ou 5 étoiles)
     function sendGoogleRedirectEmail() {
-        const templateParams = {
-            client_name: formData.name,
-            client_source: formData.source,
+        const payload = {
+            name: formData.name,
+            source: formData.source,
             rating: formData.rating,
             feedback: "Client très satisfait (Redirigé vers l'avis Google 4-5 étoiles)"
         };
 
-        emailjs.send('service_ambiance_eclaira', 'template_igmdrwr', templateParams)
-            .then(function(response) {
-                console.log('E-mail de suivi Google envoyé avec succès !', response.status);
-            }, function(error) {
-                console.error('Erreur lors de l\'envoi de l\'e-mail :', error);
-            });
+        // 1. Sauvegarde dans le Google Sheet
+        saveToGoogleSheets(payload);
+
+        // 2. Envoi de l'e-mail via EmailJS
+        emailjs.send('service_ambiance_eclaira', 'template_igmdrwr', {
+            client_name: payload.name,
+            client_source: payload.source,
+            rating: payload.rating,
+            feedback: payload.feedback
+        })
+        .then(function(response) {
+            console.log('E-mail de suivi Google envoyé avec succès !', response.status);
+        }, function(error) {
+            console.error('Erreur lors de l\'envoi de l\'e-mail :', error);
+        });
     }
 
-    // Envoi de l'e-mail pour un retour d'amélioration (1 à 3 étoiles)
+    // Envoi pour un retour d'amélioration (1 à 3 étoiles)
     function submitPrivateFeedback() {
         formData.feedback = document.getElementById('feedback-text').value || "Aucun commentaire textuel saisi.";
 
-        const templateParams = {
-            client_name: formData.name,
-            client_source: formData.source,
+        const payload = {
+            name: formData.name,
+            source: formData.source,
             rating: formData.rating,
             feedback: formData.feedback
         };
 
-        emailjs.send('service_ambiance_eclaira', 'template_igmdrwr', templateParams)
-            .then(function(response) {
-                console.log('E-mail de retour privé envoyé avec succès !', response.status);
-                document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
-                document.getElementById('step-3').classList.add('active');
-            }, function(error) {
-                console.error('Erreur lors de l\'envoi de l\'e-mail :', error);
-                alert("Une erreur est survenue lors de l'envoi de votre message. Veuillez réessayer.");
-            });
+        // 1. Sauvegarde dans le Google Sheet
+        saveToGoogleSheets(payload);
+
+        // 2. Envoi de l'e-mail via EmailJS
+        emailjs.send('service_ambiance_eclaira', 'template_igmdrwr', {
+            client_name: payload.name,
+            client_source: payload.source,
+            rating: payload.rating,
+            feedback: payload.feedback
+        })
+        .then(function(response) {
+            console.log('E-mail de retour privé envoyé avec succès !', response.status);
+            document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+            document.getElementById('step-3').classList.add('active');
+        }, function(error) {
+            console.error('Erreur lors de l\'envoi de l\'e-mail :', error);
+            alert("Une erreur est survenue lors de l'envoi de votre message. Veuillez réessayer.");
+        });
     }
 </script>
-
 </body>
 </html>

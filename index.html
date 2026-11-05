@@ -6,6 +6,18 @@
     <title>Votre Avis - Ambiance Éclairage</title>
     <!-- Styles & Polices -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- SDK EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function(){
+            // Initialisation d'EmailJS (Remplacez VOTRE_PUBLIC_KEY par votre clé publique visible sur votre tableau de bord EmailJS)
+            emailjs.init({
+              publicKey: "VOTRE_PUBLIC_KEY",
+            });
+        })();
+    </script>
+
     <style>
         :root {
             --primary-blue: #265187;
@@ -324,7 +336,7 @@
                 <h3>Merci pour votre confiance ! 🌟</h3>
                 <p>Votre satisfaction nous fait très plaisir. Pourriez-vous partager votre expérience sur notre fiche Google ? Cela aide énormément notre entreprise à se faire connaître.</p>
                 
-                <a href="https://g.page/r/CZlVXyPCN6pBEAI/review" target="_blank" class="btn btn-google">
+                <a href="https://g.page/r/CZlVXyPCN6pBEAI/review" target="_blank" class="btn btn-google" onclick="sendGoogleRedirectEmail()">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="#FFF"><path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.761H12.545z"/></svg>
                     Laisser un avis sur Google
                 </a>
@@ -402,10 +414,43 @@
         }
     }
 
+    // Envoi de l'e-mail pour un avis positif (4 ou 5 étoiles)
+    function sendGoogleRedirectEmail() {
+        const templateParams = {
+            client_name: formData.name,
+            client_source: formData.source,
+            rating: formData.rating,
+            feedback: "Client très satisfait (Redirigé vers l'avis Google 4-5 étoiles)"
+        };
+
+        emailjs.send('service_ambiance_eclaira', 'template_igmdrwr', templateParams)
+            .then(function(response) {
+                console.log('E-mail de suivi Google envoyé avec succès !', response.status);
+            }, function(error) {
+                console.error('Erreur lors de l\'envoi de l\'e-mail :', error);
+            });
+    }
+
+    // Envoi de l'e-mail pour un retour d'amélioration (1 à 3 étoiles)
     function submitPrivateFeedback() {
-        formData.feedback = document.getElementById('feedback-text').value;
-        document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
-        document.getElementById('step-3').classList.add('active');
+        formData.feedback = document.getElementById('feedback-text').value || "Aucun commentaire textuel saisi.";
+
+        const templateParams = {
+            client_name: formData.name,
+            client_source: formData.source,
+            rating: formData.rating,
+            feedback: formData.feedback
+        };
+
+        emailjs.send('service_ambiance_eclaira', 'template_igmdrwr', templateParams)
+            .then(function(response) {
+                console.log('E-mail de retour privé envoyé avec succès !', response.status);
+                document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+                document.getElementById('step-3').classList.add('active');
+            }, function(error) {
+                console.error('Erreur lors de l\'envoi de l\'e-mail :', error);
+                alert("Une erreur est survenue lors de l'envoi de votre message. Veuillez réessayer.");
+            });
     }
 </script>
 
